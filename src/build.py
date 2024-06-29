@@ -33,7 +33,7 @@ PLUGIN_VERSION = str(__version__)
 
 ADDITIONAL_FILES = [
     "start.sh",
-    "ngrok.exe"
+    "../ngrok.exe"
     ]
 
 if PLUGIN_ICON != "":
