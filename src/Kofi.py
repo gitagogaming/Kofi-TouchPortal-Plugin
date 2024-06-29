@@ -39,7 +39,7 @@ log.setLevel(logging.ERROR)
 def webhook():
     if request.method == 'POST':
         data = json.loads(request.form['data'])
-        if data['verification_token']  != "3fa2864d-a26a-4641-9bf9-5baecae72f96":
+        if data['verification_token']  != TP_PLUGIN_SETTINGS['Kofi Verification Token']:
             return '', 403
         
         process_webhook_data(data)
@@ -67,7 +67,7 @@ def process_donation(data):
     }
     statelist = []
 
-    symbol = currency_symbols.get(data['currency'], "")  # Returns None if currency is not found
+    symbol = currency_symbols.get(data['currency'], "")  # Returns
     if symbol:
         statelist.append({"id": PLUGIN_ID + ".donation.currency", "value": symbol})
 
@@ -141,7 +141,7 @@ def handleShopOrder(data):
         "AUD": "A$",
         "CAD": "C$"
     }
-    symbol = currency_symbols.get(data['currency'], "")  # Returns None if currency is not found
+    symbol = currency_symbols.get(data['currency'], "")  # Returns empty string if currency is not found
 
     stateList.extend([
         {'id':PLUGIN_ID + ".shop.timestamp", 'value':readable_timestamp},
@@ -185,11 +185,16 @@ def handleSettings(settings, on_connect=False):
     g_log.debug(f"Settings: {settings}")
 
     if (value := settings.get("Ngrok Server Address")) is not None:
-        TP_PLUGIN_SETTINGS['Ngrok Address']['value'] = value
+        TP_PLUGIN_SETTINGS['Ngrok Server Address']['value'] = value
+
     if (value := settings.get("Ngrok Port")) is not None:
         TP_PLUGIN_SETTINGS['Ngrok Port']['value'] = value
+
     if (value := settings.get("Ngrok Auth Token")) is not None:
         TP_PLUGIN_SETTINGS['Ngrok Auth Token'] = value
+
+    if (value := settings.get("Kofi Verification Token")) is not None:
+        TP_PLUGIN_SETTINGS['Kofi Verification Token'] = value
 
 
 @TPClient.on(TP.TYPES.onNotificationOptionClicked)
@@ -238,7 +243,7 @@ def onAction(data: dict):
 def start_ngrok():
     global ngrok_running
     ## Starting up Ngrok server
-    if TP_PLUGIN_SETTINGS['Ngrok Address']['value'] != "" and TP_PLUGIN_SETTINGS['Ngrok Port']['value'] != "":
+    if TP_PLUGIN_SETTINGS['Ngrok Server Address']['value'] != "" and TP_PLUGIN_SETTINGS['Ngrok Port']['value'] != "":
         try:
             ngrok_command = "ngrok start --config=ngrok.yaml --all"
             subprocess.Popen(ngrok_command, shell=True)

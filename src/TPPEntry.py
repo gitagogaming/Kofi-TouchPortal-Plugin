@@ -1,5 +1,7 @@
 PLUGIN_ID = "gitago.kofi"
 PLUGIN_NAME = "Kofi"
+PLUGIN_ICON = "Kofi_Logo_26px.png"
+PLUGIN_FOLDER = "Kofi"
 __version__ = 100
 
 
@@ -18,7 +20,7 @@ TP_PLUGIN_INFO = {
 }
 
 TP_PLUGIN_SETTINGS = {
-    'Ngrok Address': {
+    'Ngrok Server Address': {
         'name': "Ngrok Server Address",
         'type': "text",
         'default': "",
@@ -33,8 +35,16 @@ TP_PLUGIN_SETTINGS = {
         'readOnly': False,
         'value': None  
     },
-    "Auth Token": {
+    "Ngrok Auth Token": {
         'name': "Ngrok Auth Token",
+        'type': "text",
+        'default': "",
+        'readOnly': False,
+        'value': None,
+        "isPassword": True
+    },
+    "Kofi Verification Token": {
+        'name': "Kofi Verification Token",
         'type': "text",
         'default': "",
         'readOnly': False,
