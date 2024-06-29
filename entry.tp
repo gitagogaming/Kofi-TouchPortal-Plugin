@@ -1,0 +1,310 @@
+{
+  "sdk": 6,
+  "version": 100,
+  "name": "Kofi",
+  "id": "gitago.kofi",
+  "configuration": {
+    "colorDark": "#222423",
+    "colorLight": "#43a047"
+  },
+  "plugin_start_cmd": "%TP_PLUGIN_FOLDER%Kofi\\Kofi_Plugin.exe",
+  "plugin_start_cmd_windows": "%TP_PLUGIN_FOLDER%Kofi\\Kofi_Plugin.exe",
+  "categories": [
+    {
+      "id": "gitago.kofi.main",
+      "name": "Kofi Main Category",
+      "imagepath": "%TP_PLUGIN_FOLDER%Kofi\\Kofi_Logo_26px.png",
+      "actions": [],
+      "states": [],
+      "events": [
+        {
+          "id": "gitago.kofi.event.newDonation",
+          "name": "Kofi | New Donation",
+          "format": "When receiving a new donation $val",
+          "type": "communicate",
+          "valueChoices": [
+            "True"
+          ],
+          "valueType": "choice",
+          "valueStateId": "gitago.kofi.state.newDonation"
+        },
+        {
+          "id": "gitago.kofi.event.newSubscription",
+          "name": "Kofi | New Subscription",
+          "format": "When receiving a new subscription $val",
+          "type": "communicate",
+          "valueChoices": [
+            "True"
+          ],
+          "valueType": "choice",
+          "valueStateId": "gitago.kofi.state.newSubscription"
+        },
+        {
+          "id": "gitago.kofi.event.newShopOrder",
+          "name": "Kofi | New Shop Order",
+          "format": "When receiving a new shop order $val",
+          "type": "communicate",
+          "valueChoices": [
+            "True"
+          ],
+          "valueType": "choice",
+          "valueStateId": "gitago.kofi.state.newShopOrder"
+        },
+        {
+          "id": "gitago.kofi.event.recurringSubscription",
+          "name": "Kofi | Recurring Subscription",
+          "format": "When receiving a recurring subscription $val",
+          "type": "communicate",
+          "valueChoices": [
+            "True"
+          ],
+          "valueType": "choice",
+          "valueStateId": "gitago.kofi.state.recurringSubscription"
+        }
+      ],
+      "connectors": []
+    },
+    {
+      "id": "gitago.kofi.donation",
+      "name": "Kofi - New Donations",
+      "imagepath": "%TP_PLUGIN_FOLDER%Kofi\\Kofi_Logo_26px.png",
+      "actions": [],
+      "states": [
+        {
+          "id": "gitago.kofi.donation.name",
+          "type": "text",
+          "desc": "Name of the Donor",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.donation.message",
+          "type": "text",
+          "desc": "Message from the Donor",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.donation.amount",
+          "type": "text",
+          "desc": "Amount Donated",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.donation.timestamp",
+          "type": "text",
+          "desc": "Timestamp of the Donation",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.donation.is_public",
+          "type": "text",
+          "desc": "Is the Donation Public",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.donation.currency",
+          "type": "text",
+          "desc": "Currency Type of the Donation",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.state.newDonation",
+          "type": "text",
+          "desc": "New Donation Event",
+          "default": ""
+        }
+      ],
+      "events": [],
+      "connectors": []
+    },
+    {
+      "id": "gitago.kofi.subscription",
+      "name": "Kofi - New Subscriptions",
+      "imagepath": "%TP_PLUGIN_FOLDER%Kofi\\Kofi_Logo_26px.png",
+      "actions": [],
+      "states": [
+        {
+          "id": "gitago.kofi.subscription.is_first_subscription_payment",
+          "type": "text",
+          "desc": "Is this the first subscription payment",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.subscription.timestamp",
+          "type": "text",
+          "desc": "Timestamp of the Subscription Payment",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.subscription.is_public",
+          "type": "text",
+          "desc": "Is the Subscription Payment Public",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.subscription.from_name",
+          "type": "text",
+          "desc": "Name of the Subscriber",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.subscription.message",
+          "type": "text",
+          "desc": "Message from the Subscriber",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.subscription.amount",
+          "type": "text",
+          "desc": "Amount of the Subscription Payment",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.subscription.currency_type",
+          "type": "text",
+          "desc": "Currency Type of the Subscription Payment",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.subscription.tier_name",
+          "type": "text",
+          "desc": "Name of the Subscription Tier",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.state.newSubscription",
+          "type": "text",
+          "desc": "New Subscription Event",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.state.recurringSubscription",
+          "type": "text",
+          "desc": "Recurring Subscription Event",
+          "default": ""
+        }
+      ],
+      "events": [],
+      "connectors": []
+    },
+    {
+      "id": "gitago.kofi.shop",
+      "name": "Kofi - New Shop Orders",
+      "imagepath": "%TP_PLUGIN_FOLDER%Kofi\\Kofi_Logo_26px.png",
+      "actions": [],
+      "states": [
+        {
+          "id": "gitago.kofi.shop.timestamp",
+          "type": "text",
+          "desc": "Timestamp of the Shop Order",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.shop.is_public",
+          "type": "text",
+          "desc": "Is the Shop Order Public",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.shop.city",
+          "type": "text",
+          "desc": "City of the Shop Order",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.shop.state",
+          "type": "text",
+          "desc": "State of the Shop Order",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.shop.country",
+          "type": "text",
+          "desc": "Country of the Shop Order",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.shop.country_code",
+          "type": "text",
+          "desc": "Country Code of the Shop Order",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.shop.shop_item_1",
+          "type": "text",
+          "desc": "Shop Item 1 Details",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.shop.shop_item_2",
+          "type": "text",
+          "desc": "Shop Item 2 Details",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.shop.shop_item_3",
+          "type": "text",
+          "desc": "Shop Item 3 Details",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.shop.shop_item_4",
+          "type": "text",
+          "desc": "Shop Item 4 Details",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.shop.shop_item_5",
+          "type": "text",
+          "desc": "Shop Item 5 Details",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.shop.shop_item_6",
+          "type": "text",
+          "desc": "Shop Item 6 Details",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.shop.total_items",
+          "type": "text",
+          "desc": "Total Items Ordered",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.shop.amount",
+          "type": "text",
+          "desc": "Total Amount of the Shop Order",
+          "default": ""
+        },
+        {
+          "id": "gitago.kofi.state.newShopOrder",
+          "type": "text",
+          "desc": "New Shop Order Event",
+          "default": ""
+        }
+      ],
+      "events": [],
+      "connectors": []
+    }
+  ],
+  "settings": [
+    {
+      "name": "Ngrok Server Address",
+      "type": "text",
+      "default": "",
+      "readOnly": false
+    },
+    {
+      "name": "Ngrok Port",
+      "type": "text",
+      "default": "5000",
+      "readOnly": false
+    },
+    {
+      "name": "Ngrok Auth Token",
+      "type": "text",
+      "default": "",
+      "readOnly": false
+    }
+  ]
+}
