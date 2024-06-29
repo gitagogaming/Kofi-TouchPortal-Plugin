@@ -25,7 +25,7 @@ PLUGIN_ROOT = PLUGIN_FOLDER
 PLUGIN_ICON =  rf"{PLUGIN_ICON}"
 
 
-OUTPUT_PATH = r"./"
+OUTPUT_PATH = "../"
 
 
 PLUGIN_VERSION = str(__version__)
