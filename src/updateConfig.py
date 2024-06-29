@@ -16,7 +16,7 @@ def update_config_file():
 
     if tunnel_name in ngrok_config['tunnels']:
         current_hostname = ngrok_config['tunnels'][tunnel_name].get('hostname')
-        new_hostname = TP_PLUGIN_SETTINGS['Ngrok Address']['value']
+        new_hostname = TP_PLUGIN_SETTINGS['Ngrok Server Address']['value']
         current_addr = ngrok_config['tunnels'][tunnel_name].get('addr')
         new_addr = "127.0.0.1:" + TP_PLUGIN_SETTINGS['Ngrok Port']['value']
 
