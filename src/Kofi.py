@@ -98,12 +98,12 @@ def handleSubscription(data):
     statelist = []
     readable_timestamp = formatTimestamp(data['timestamp'])
 
-    statelist.extend[
+    statelist.extend([
         {"id":PLUGIN_ID + ".subscription.timestamp", "value":readable_timestamp},
         {"id":PLUGIN_ID + ".subscription.from_name", "value":data['from_name']},
         {"id":PLUGIN_ID + ".subscription.message", "value":data['message'] if data.get('message') is not None else ""},
         {"id":PLUGIN_ID + ".subscription.amount", "value":data['amount'] if data.get('amount') is not None else ""}
-    ]
+    ])
 
     # first time subscription
     if data.get('is_first_subscription_payment'):
