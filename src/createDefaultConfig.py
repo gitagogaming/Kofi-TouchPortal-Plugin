@@ -13,7 +13,7 @@ def create_default_yaml_file(file_path):
             }
         },
         'version': 2,
-        'web_addr': False
+        # 'web_addr': False
     }
     # Check if the file already exists
     if not os.path.exists(file_path):

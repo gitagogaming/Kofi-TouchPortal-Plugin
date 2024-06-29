@@ -1,9 +1,7 @@
 
 from TouchPortalAPI import tppbuild
 from TPPEntry import PLUGIN_NAME, PLUGIN_FOLDER, PLUGIN_ICON, __version__
-import os
 
-script_dir = os.path.dirname(os.path.realpath(__file__))
 
 
 PLUGIN_MAIN = f"{PLUGIN_NAME}.py"
@@ -34,10 +32,8 @@ PLUGIN_VERSION = str(__version__)
 
 
 ADDITIONAL_FILES = [
-    os.path.normpath(os.path.join(script_dir, "start.sh")),
-    os.path.normpath(os.path.join(script_dir, "../ngrok.exe"))
-]
-
+    "start.sh"
+    ]
 
 if PLUGIN_ICON != "":
     ADDITIONAL_FILES.append(PLUGIN_ICON)
@@ -49,8 +45,6 @@ ADDITIONAL_PYINSTALLER_ARGS = [
     "--log-level=WARN",
     #  "--noconsole"
 ]
-
-
 
 # validateBuild()
 

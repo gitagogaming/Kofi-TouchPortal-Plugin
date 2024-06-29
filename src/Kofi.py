@@ -12,9 +12,22 @@ from TouchPortalAPI.logger import Logger
 from TPPEntry import TP_PLUGIN_SETTINGS, PLUGIN_ID, TP_PLUGIN_INFO, __version__
 from createDefaultConfig import create_default_yaml_file
 from updateConfig import update_config_file
+import os
+import signal
+
+
+## figure out how to set a static location for pyngrok to download the ngrok.exe file rather than it doing it every time?
+## need to find a way to kill the ngrok process when the plugin is closed rather than the os.kill.. it should be related to the pyinstaller process but 
+## seems as if its not since its downloaded after the fact..
 
 app = Flask(__name__)
 ngrok_running = False
+
+g_log = Logger(name = PLUGIN_ID)
+## setting logging for flask to only log errors
+logging.getLogger('werkzeug').setLevel(logging.ERROR)   
+logging.getLogger("pyngrok.process.ngrok").setLevel(logging.ERROR)   
+
 try:
     TPClient = TP.Client(
         pluginId = PLUGIN_ID,             # required ID of this plugin
@@ -27,12 +40,6 @@ try:
 except Exception as e:
     sys.exit(f"Could not create TP Client, exiting. Error was:\n{repr(e)}")
 
-g_log = Logger(name = PLUGIN_ID)
-
-
-## setting logging for flask to only log errors
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)      
 
 
 @app.route('/', methods=['POST'])
@@ -239,14 +246,23 @@ def onSettingUpdate(data):
 def onAction(data: dict):
     g_log.debug(f"Action: {data}")
 
-
+def start_flask():
+    app.run(debug=False)
+    
+from pyngrok import ngrok, conf
+from pyngrok.conf import PyngrokConfig
+http_tunnel = None
 def start_ngrok():
-    global ngrok_running
+    global ngrok_running, http_tunnel
     ## Starting up Ngrok server
     if TP_PLUGIN_SETTINGS['Ngrok Server Address']['value'] != "" and TP_PLUGIN_SETTINGS['Ngrok Port']['value'] != "":
         try:
-            ngrok_command = "ngrok start --config=ngrok.yaml --all"
-            subprocess.Popen(ngrok_command, shell=True)
+            # ngrok_command = "ngrok start --config=ngrok.yaml --all"
+            # subprocess.Popen(ngrok_command, shell=True)
+            ngrok_config = PyngrokConfig()
+            ngrok_config.config_path = "ngrok.yaml" 
+            http_tunnel = ngrok.connect(name='TP_NGROK', pyngrok_config=ngrok_config)
+            
             ngrok_running = True
         except Exception as e:
             g_log.error(f"Error starting ngrok server: {e}")
@@ -273,12 +289,15 @@ def shutdownNgrok():
     global ngrok_running
     try:
         g_log.info("Shutting down ngrok...")
+        ngrok.disconnect(http_tunnel.public_url)
+        
+        ## ngrok is spawning outside of our pyinstaller sometimes and we need to assure its dead for next reload
         subprocess.run(["taskkill", "/F", "/IM", "ngrok.exe"], check=True)
         g_log.info("ngrok terminated.")
         ngrok_running = False
-
-    except subprocess.CalledProcessError as e:
-        g_log.error(f"Failed to terminate ngrok: {e}")
+    except Exception as e:
+        g_log.error(f"Error shutting down ngrok: {e}")
+        return False
 
  
 
@@ -287,6 +306,9 @@ def shutdownNgrok():
 def onShutdown(data:dict):
     g_log.info('Received shutdown event from TP Client.')
     shutdownNgrok()
+    
+    ## Requesting a shutdown for the Flask server
+    os.kill(os.getpid(), signal.SIGTERM) 
     
 
 
@@ -362,3 +384,6 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+    
+    
+    

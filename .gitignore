@@ -2,3 +2,5 @@
 *.yaml
 *.pyc
 *.tp
+*.zip
+/dist
