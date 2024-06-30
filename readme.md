@@ -1,4 +1,6 @@
 
+<img src="https://github.com/gitagogaming/Kofi-TouchPortal-Plugin/assets/76603653/4c3e4761-ad49-4863-841d-4103de39389a" width="1000" height="1000">
+
 # Kofi
 - [Kofi](#Kofi)
   - [Description](#description) 
