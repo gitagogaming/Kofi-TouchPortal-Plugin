@@ -15,9 +15,10 @@ from pyngrok.conf import PyngrokConfig
 import TouchPortalAPI as TP
 from TouchPortalAPI.logger import Logger
 
-from TPPEntry import TP_PLUGIN_SETTINGS, PLUGIN_ID, TP_PLUGIN_INFO, __version__
+from TPPEntry import TP_PLUGIN_SETTINGS, PLUGIN_ID, TP_PLUGIN_INFO, PLUGIN_NAME, PLUGIN_RELEASE_INFO, __version__
 from createDefaultConfig import create_default_yaml_file
 from updateConfig import update_config_file
+from update_check import plugin_update_check, download_update
 
 
 ## • figure out how to set a static location for pyngrok to download the ngrok.exe file rather than it doing it every time?
@@ -250,11 +251,31 @@ def handleSettings(settings, on_connect=False):
         TP_PLUGIN_SETTINGS['Kofi Verification Token']['value'] = value
 
 
+
+
+
 @TPClient.on(TP.TYPES.onNotificationOptionClicked)
 def onNoticationClicked(data):
     if data['optionId'] == f"{PLUGIN_ID}.settings.error.options":
         url = "https://dashboard.ngrok.com/signup"
         webbrowser.open(url, new=0, autoraise=True)
+        
+    elif data['optionId'] == f"{PLUGIN_ID}.update.download":
+        if PLUGIN_RELEASE_INFO['downloadURL']:
+            download_URL = PLUGIN_RELEASE_INFO['downloadURL']
+            g_log.info("Downloading the update...")
+            tpp_file = download_update(download_URL)
+            if tpp_file:
+                os.startfile(tpp_file)
+        else:
+            g_log.error("Error downloading the update, download URL not found.", download_URL)
+            
+    elif data['optionId'] == f"{PLUGIN_ID}.update.manual":
+        if PLUGIN_RELEASE_INFO['htmlURL']:
+            webbrowser.open(PLUGIN_RELEASE_INFO['htmlURL'], new=0, autoraise=True)
+        else:
+            g_log.error("Error opening the download page, URL not found.", PLUGIN_RELEASE_INFO['htmlURL'])
+
 
 
 #--- On Startup ---#
@@ -264,6 +285,31 @@ def onConnect(data):
     g_log.debug(f"Connection: {data}")
     if settings := data.get('settings'):
         handleSettings(settings, True)
+        
+    try:
+        global PLUGIN_RELEASE_INFO
+        PLUGIN_RELEASE_INFO = plugin_update_check(str(data['pluginVersion']))
+        
+        if PLUGIN_RELEASE_INFO['patchnotes']:
+            patchNotes = f"A new version of {PLUGIN_NAME} is available and ready to Download.\nThis may include Bug Fixes and or New Features\n\nPatch Notes\n{PLUGIN_RELEASE_INFO['patchnotes']}"
+        elif PLUGIN_RELEASE_INFO['patchnotes'] == "":
+            patchNotes = f"A new version of {PLUGIN_NAME} is available and ready to Download.\nThis may include Bug Fixes and or New Features"
+        if PLUGIN_RELEASE_INFO['version']:
+            TPClient.showNotification(
+                notificationId= f"{PLUGIN_ID}.TP.Plugins.Update_Check",
+                title=f"{PLUGIN_NAME} {PLUGIN_RELEASE_INFO['version']} is available",
+                msg=patchNotes,
+                options= [
+                {
+                "id":f"{PLUGIN_ID}.update.download",
+                "title":"(Auto) Download & Update!"
+                },
+                {
+                "id":f"{PLUGIN_ID}.update.manual",
+                "title":"(Manual) Open Plugin Download Page"
+                }])
+    except Exception as e:
+        print("Error Checking for Updates", e)
 
     create_default_yaml_file('ngrok.yaml')
     time.sleep(1)

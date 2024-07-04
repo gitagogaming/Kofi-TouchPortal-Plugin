@@ -1,10 +1,12 @@
-PLUGIN_ID = "gitago.kofi"
+PLUGIN_ID = "gitago.kofi"  
 PLUGIN_NAME = "Kofi"
 PLUGIN_ICON = "Kofi_Logo_26px.png"
 PLUGIN_FOLDER = "Kofi"
 __version__ = 101
 
-
+GITHUB_USER_NAME = "GitagoGaming"
+GITHUB_PLUGIN_NAME = "Kofi-TouchPortal-Plugin"
+PLUGIN_RELEASE_INFO = {} # This will be updated by the update_check.py script
 
 TP_PLUGIN_INFO = {
     "sdk": 6,
