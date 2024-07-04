@@ -6,12 +6,13 @@ def update_config_file():
     with open('ngrok.yaml', 'r') as file:
         ngrok_config = yaml.safe_load(file)
 
+    print(f"Updating ngrok configuration for {TP_PLUGIN_INFO['name']} v{__version__}")
     tunnel_name = 'TP_NGROK' 
     config_changed = False
 
     # Update the authtoken if it has changed
-    if ngrok_config.get('authtoken') != TP_PLUGIN_SETTINGS['Ngrok Auth Token']:
-        ngrok_config['authtoken'] = TP_PLUGIN_SETTINGS['Ngrok Auth Token']
+    if ngrok_config.get('authtoken') != TP_PLUGIN_SETTINGS['Ngrok Auth Token']['value']:
+        ngrok_config['authtoken'] = TP_PLUGIN_SETTINGS['Ngrok Auth Token']['value']
         config_changed = True
 
     if tunnel_name in ngrok_config['tunnels']:

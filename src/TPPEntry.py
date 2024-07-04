@@ -2,7 +2,7 @@ PLUGIN_ID = "gitago.kofi"
 PLUGIN_NAME = "Kofi"
 PLUGIN_ICON = "Kofi_Logo_26px.png"
 PLUGIN_FOLDER = "Kofi"
-__version__ = 100
+__version__ = 101
 
 
 
@@ -77,11 +77,8 @@ TP_PLUGIN_CATEGORIES = {
 }
 
 
-TP_PLUGIN_ACTIONS = {
-  
-}
-
-TP_PLUGIN_STATES = { }
+TP_PLUGIN_ACTIONS = {}
+TP_PLUGIN_STATES = {}
 
 
 SHOP_STATES = {
@@ -89,6 +86,20 @@ SHOP_STATES = {
         "id": PLUGIN_ID + ".shop.timestamp",
         "type": "text",
         "desc": "Timestamp of the Shop Order",
+        "default": "",
+        "category": "shop"
+    },
+    "shop_from_name": {
+        "id": PLUGIN_ID + ".shop.from_name",
+        "type": "text",
+        "desc": "Name of the Shop Orderer",
+        "default": "",
+        "category": "shop"
+    },
+    "shop_message": {
+        "id": PLUGIN_ID + ".shop.message",
+        "type": "text",
+        "desc": "Message from the Shop Orderer",
         "default": "",
         "category": "shop"
     },
