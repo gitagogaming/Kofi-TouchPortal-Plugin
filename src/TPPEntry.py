@@ -13,12 +13,11 @@ TP_PLUGIN_INFO = {
     'version': __version__,
     "name": "Kofi",
     "id": PLUGIN_ID,
-    "plugin_start_cmd_windows": "%TP_PLUGIN_FOLDER%Kofi\\Kofi_Plugin.exe",
+    "plugin_start_cmd_windows": "\"%TP_PLUGIN_FOLDER%Kofi\\Kofi_Plugin.exe\"",
     "configuration": {
         "colorDark": "#222423",
         "colorLight": "#43a047"
     },
-    "plugin_start_cmd": "%TP_PLUGIN_FOLDER%Kofi\\Kofi_Plugin.exe"
 }
 
 TP_PLUGIN_SETTINGS = {
