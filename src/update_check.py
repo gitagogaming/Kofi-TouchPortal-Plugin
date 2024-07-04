@@ -7,7 +7,43 @@ from tempfile import gettempdir
 from TPPEntry import GITHUB_USER_NAME, GITHUB_PLUGIN_NAME    
 
 
-def get_release_info(owner, repo):
+def plugin_update_check(plugin_version:str):
+    """ Checks Github for the latest version of the plugin
+    - Returns patchnotes on notification if there is a new version 
+    """
+    
+    try:
+        github_version, download_url, html_url = _get_release_info(GITHUB_USER_NAME, GITHUB_PLUGIN_NAME)
+        github_version =  github_version.replace('v','').replace(".","")
+      
+        if github_version > plugin_version:
+            patch_notes = _fetch_patch_notes(GITHUB_USER_NAME, GITHUB_PLUGIN_NAME)
+            return {"version":github_version, "patchnotes":patch_notes, "downloadURL": download_url, "htmlURL": html_url}
+        else:
+            return False, False
+        
+    except Exception as e:
+        print("Something went wrong checking update", e)
+ 
+ 
+ 
+def _fetch_patch_notes(user_name: str, plugin_name: str) -> str:
+    """Fetches and decodes patch notes from GitHub."""
+    patch_notes_url = f"https://api.github.com/repos/{user_name}/{plugin_name}/contents/recent_patchnotes.txt"
+    response = requests.get(patch_notes_url)
+    if response.status_code == 404:
+        print("No Patch Notes Found")
+        return ""
+    try:
+        content = response.json()['content']
+        decoded_bytes = base64.b64decode(content)
+        return decoded_bytes.decode('ascii')
+    except Exception as e:
+        print(f"Error fetching patch notes: {e}")
+        return None
+        
+
+def _get_release_info(owner, repo):
     url = f'https://api.github.com/repos/{owner}/{repo}/releases'
     if (response := requests.get(url)) and response.ok:
         if (releases := response.json()):
@@ -26,38 +62,6 @@ def get_release_info(owner, repo):
         raise ValueError(f'Invalid repository URL or response: {url}')
 
 
-def plugin_update_check(plugin_version:str):
-    """ Checks Github for the latest version of the plugin
-    - Returns patchnotes on notification if there is a new version 
-    """
-    
-    try:
-        github_version, downloadURL, htmlURL = get_release_info(GITHUB_USER_NAME, GITHUB_PLUGIN_NAME)
-        github_version =  github_version.replace('v','').replace(".","")
-      
-        if github_version.replace('v','').replace(".","") > plugin_version:
-            ### Pulling Patch Notes for Notification
-
-            try:
-                r = requests.get(f"https://api.github.com/repos/{GITHUB_USER_NAME}/{GITHUB_PLUGIN_NAME}/contents/recent_patchnotes.txt") 
-                if r.status_code == 404:
-                    print("No Patch Notes Found")
-                    message = ""
-                else:
-                    base64_bytes = r.json()['content'].encode('ascii')
-                    message_bytes = base64.b64decode(base64_bytes)
-                    message = message_bytes.decode('ascii')
-            except Exception as e:
-                message = None
-                print("Error Plugin Update Check: ", e)
-            return {"version":github_version, "patchnotes":message, "downloadURL": downloadURL, "htmlURL": htmlURL}
-        else:
-            return False, False
-        
-    except Exception as e:
-        print("Something went wrong checking update", e)
-        
-        
 
 def download_update(download_url):
     # Extract the file name from the URL
@@ -71,3 +75,5 @@ def download_update(download_url):
             file.write(response.content)
             return temp_file_path
     return None
+
+
