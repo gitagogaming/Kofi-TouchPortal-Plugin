@@ -1,22 +1,23 @@
-from flask import Flask, request
-from datetime import datetime
 from argparse import ArgumentParser
+from datetime import datetime
+import json
+import logging
+import os
+import signal
 import subprocess
 import sys
-import json       
 import time
 import webbrowser
-import logging    
+
+from flask import Flask, request
+from pyngrok import ngrok
+from pyngrok.conf import PyngrokConfig
 import TouchPortalAPI as TP
 from TouchPortalAPI.logger import Logger
+
 from TPPEntry import TP_PLUGIN_SETTINGS, PLUGIN_ID, TP_PLUGIN_INFO, __version__
 from createDefaultConfig import create_default_yaml_file
 from updateConfig import update_config_file
-import os
-import signal
-
-from pyngrok import ngrok
-from pyngrok.conf import PyngrokConfig
 
 
 ## • figure out how to set a static location for pyngrok to download the ngrok.exe file rather than it doing it every time?
@@ -60,7 +61,7 @@ class ngrokManager:
             try:
                 # ngrok_command = "ngrok start --config=ngrok.yaml --all"
                 # subprocess.Popen(ngrok_command, shell=True)
-                g_log.info("Starting ngrok server...")
+                # g_log.info("Starting ngrok server...")
                 self.http_tunnel = ngrok.connect(name='TP_NGROK', pyngrok_config=self.ngrok_config)
                 self.ngrok_running = True
             except Exception as e:
@@ -224,7 +225,8 @@ class kofiManager:
 def webhook():
     if request.method == 'POST':
         data = json.loads(request.form['data'])
-        if data['verification_token']  != TP_PLUGIN_SETTINGS['Kofi Verification Token']:
+        if data['verification_token']  != TP_PLUGIN_SETTINGS['Kofi Verification Token']['value']:
+            g_log.error("Verification token does not match.")
             return '', 403
         
         KofiManager.process_webhook_data(data)
