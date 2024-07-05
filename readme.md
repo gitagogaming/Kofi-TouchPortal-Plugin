@@ -109,7 +109,8 @@ This documentation generated for Kofi V100 with [Python TouchPortal SDK](https:/
 <tr valign='top'><td>.event.newDonation</td><td>Kofi | New Donation</td><td>.state.newDonation</td><td>When receiving a new donation $val</td><td>choice</td><td><ul><li>True</li></ul></td><tr valign='top'><td>.event.newSubscription</td><td>Kofi | New Subscription</td><td>.state.newSubscription</td><td>When receiving a new subscription $val</td><td>choice</td><td><ul><li>True</li></ul></td><tr valign='top'><td>.event.newShopOrder</td><td>Kofi | New Shop Order</td><td>.state.newShopOrder</td><td>When receiving a new shop order $val</td><td>choice</td><td><ul><li>True</li></ul></td><tr valign='top'><td>.event.recurringSubscription</td><td>Kofi | Recurring Subscription</td><td>.state.recurringSubscription</td><td>When receiving a recurring subscription $val</td><td>choice</td><td><ul><li>True</li></ul></td></table></details>
 <br>
 
-# How To Install
+# How To Install 
+YouTube Tutorial<br>
 <a href="https://www.youtube.com/watch?v=Hv2nZPQMh24">
   <img src="https://img.youtube.com/vi/Hv2nZPQMh24/0.jpg" alt="IMAGE ALT TEXT HERE">
 </a>
